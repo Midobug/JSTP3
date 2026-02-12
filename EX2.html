@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form and table</title>
+
+</head>
+<style>
+    /* BODY */
+    body {
+        font-family: 'Arial', sans-serif;
+        background: #fce4ec; /* rose pâle */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+    }
+    
+    /* TITRE */
+    h1 {
+        color: #e53935; /* rouge Ladybug */
+        text-shadow: 1px 1px black;
+    }
+    
+    /* FORMULAIRE */
+    form {
+        background: black;
+        padding: 20px;
+        border-radius: 15px;
+        width: 350px;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    /* LABELS ET INPUTS */
+    form label, form input, form button {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    input {
+        padding: 8px;
+        border-radius: 8px;
+        border: 2px solid #e53935;
+    }
+    
+    button {
+        margin-top: 15px;
+        background: #e53935;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    
+    button:hover {
+        background: black;
+        color: #e53935;
+    }
+    
+    /* DIV D'ERREUR */
+    #error, #err {
+        color: yellow;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    
+    /* TABLEAU */
+    table {
+        margin-top: 20px;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    
+    td {
+        padding: 10px;
+        border: 2px solid #e53935;
+        background: black;
+        color: #e53935;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+     </style>
+<script>
+    function Generate(){
+        let dim = parseInt(taille.value);
+        let minVal = parseInt(min.value);
+        let maxVal = parseInt(max.value);
+
+        err.innerHTML="";
+        result.innerHTML= "";
+
+    if (isNaN(dim) || isNaN(minVal) || isNaN(maxVal)) {
+    err.innerHTML = "Entrer des nombres entiers";
+    return false;
+  }
+
+  if ( minVal>= maxVal) {
+    err.innerHTML = "min doit être < max";
+    return false;
+  }
+
+  let html = "<table border=1>";
+
+  for (let i=0;i<dim;i++) {
+    if (i%10==0) html += "<tr>";
+
+    let r = Math.floor(Math.random()*(maxVal-minVal+1)) + minVal;
+    html += "<td>"+r+"</td>";
+
+    if (i%10==9) html += "</tr>";
+  }
+
+  html += "</table>";
+  result.innerHTML = html;
+
+  return false;
+}
+</script>
+<body>
+    <h1>form and table</h1>
+    <form onsubmit= "return Generate()" id="f">
+        Dimension: <input id="taille"><br>
+        minimum: <input id="min"><br>
+        maximum: <input id="max"><br>
+        <button>Generate</button>
+      
+    </form>
+    <div id="err"></div>
+    <div id="result"></div>
+</body>
+</html>

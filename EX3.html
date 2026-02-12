@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>studentForm</title>
+    <style>
+        body{
+    font-family:sans-serif;
+    background:#1a1a1a;
+    color:#fff;
+    padding:20px;
+}
+h1{
+    color:#f2c94c; /* doré ninja */
+    text-align:center;
+}
+form,table{
+    background:#111;
+    padding:15px;
+    border-radius:10px;
+    max-width:600px;
+    margin:20px auto;
+    box-shadow:0 0 15px #f2c94c;
+}
+input,select,button{
+    width:100%;
+    margin:5px 0;
+    padding:8px;
+    border-radius:5px;
+    border:none;
+}
+input,select{
+    background:#222;
+    color:#fff;
+}
+button{
+    background:#e63946; /* rouge ninja */
+    color:#fff;
+    cursor:pointer;
+    font-weight:bold;
+}
+button:hover{
+    background:#d62828;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    border:1px solid #444;
+    padding:8px;
+    text-align:center;
+}
+th{
+    background:#e63946;
+}
+.reussi{
+    background:#2a9d8f; /* vert sombre pour réussite */
+}
+.echec{
+    background:#e76f51; /* rouge pour échec */
+}
+    </style>
+</head>
+<body>
+    <h1>gestion des etudiants</h1>
+    <form id="studentForm">
+        code d'etudiants:<input type="text" idd="code" placeholder="studentcode"><br>
+        nom: <input type="text" idd="code" placeholder="studentcode"><br>
+        prenom: <input type="text" idd="code" placeholder="studentcode"><br>
+       semestre: <select id="Semestre"> 
+        <option>S1</option> 
+        <option>S2</option>
+        </select>
+       results:<input type="number" min="0" max="20" placeholder="Module 1" class="note">
+       <input type="number" min="0" max="20" placeholder="Module 2" class="note">
+        <input type="number" min="0" max="20" placeholder="Module 3" class="note">
+       <input type="number" min="0" max="20" placeholder="Module 4" class="note">
+       <input type="number" min="0" max="20" placeholder="Module 5" class="note">
+       <input type="number" min="0" max="20" placeholder="Module 6" class="note">  
+    <button>Add</button> 
+    </form>
+    <table>
+        <thead><tr><th>code</th><th>nom</th><th>prenom</th><th>semestre</th><th>Moy</th><th>results</th></tr></thead>
+        <tbody id="tbody"></tbody>
+    </table>
+<script>
+    document.getElementById("form").onsubmit = e => {
+e.preventDefault();
+let code=document.getElementById("code").value.trim(),
+nom=document.getElementById("nom").value.trim(),
+prenom=document.getElementById("prenom").value.trim(),
+semestre=document.getElementById("semestre").value,
+notes=[...document.querySelectorAll(".note")].map(i=>Number(i.value));
+
+if(!code||!nom||!prenom||!semestre||notes.some(isNaN)){alert("Remplir tous les champs correctement");return;}
+
+let moyenne=notes.reduce((a,b)=>a+b,0)/notes.length,
+modulesNonVal=notes.filter(n=>n<12&&n>=8).length,
+eliminatoire=notes.some(n=>n<8),
+res=(eliminatoire||modulesNonVal>=3)?"Échec":(moyenne>=12?"Réussi":"Échec");
+
+let tr=document.createElement("tr");tr.className=res==="Réussi"?"reussi":"echec";
+tr.innerHTML=`<td>${code}</td><td>${nom}</td><td>${prenom}</td><td>${semestre}</td><td>${moyenne.toFixed(2)}</td><td>${res}</td>`;
+document.getElementById("tbody").appendChild(tr);
+e.target.reset();
+};
+</script>
+</body>
+</html>
